@@ -67,7 +67,8 @@ class Coordinate:
 
 		for action in self.actionset:
 			action_values.append(action.value)
-
+		# print(action_values)
+		# print(max(action_values))
 		for action in self.actionset:
 			if (action.value == max(action_values)):
 				best_actions.append(action.action)

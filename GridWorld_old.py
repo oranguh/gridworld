@@ -276,20 +276,21 @@ class Gridworld:
 
 			# alpha = 1/t. But is t the 'total' amount of actions made? or the amount of 'specific' actions made.
 			self.alpha = 1/self.coordinates[previous_coordinate].actionset[previous_index].count
+			# self.alpha = 0.5
 
 			# qsa = qsa + alpha(R + epsilon(max(q's'a')) - qsa)
 			# print(previous_index)
 
 			self.coordinates[previous_coordinate].actionset[previous_index].value = \
-			self.coordinates[previous_coordinate].actionset[previous_index].value + \
-			self.alpha * (self.coordinates[previous_coordinate].reward + self.discount_factor * \
-			(self.coordinates[self.agent_position].find_max_action_value() - \
-			self.coordinates[previous_coordinate].actionset[previous_index].value))
+			(1 - self.alpha) * self.coordinates[previous_coordinate].actionset[previous_index].value + \
+			self.alpha * (self.coordinates[previous_coordinate].reward + (self.discount_factor * \
+			self.coordinates[self.agent_position].find_max_action_value()))
 
-
-
-
-
+			# self.coordinates[previous_coordinate].actionset[previous_index].value = \
+			# self.coordinates[previous_coordinate].actionset[previous_index].value + \
+			# self.alpha * (self.coordinates[previous_coordinate].reward + self.discount_factor * \
+			# self.coordinates[self.agent_position].find_max_action_value() - \
+			# self.coordinates[previous_coordinate].actionset[previous_index].value)
 
 
 			# print(self.coordinates[previous_coordinate].actionset[previous_index].value)
@@ -321,7 +322,7 @@ class Gridworld:
 		for position_x in reversed(range(self.grid_size)):
 			for position_y in range(self.grid_size):
 				print("|  ", end = '')
-				for i, action in enumerate(reversed(["N", "E", "S", "W"])):
+				for i, action in enumerate(["N", "E", "S", "W"]):
 					print(action, end = '')
 					print(":{0:.2f}  ".format(self.coordinates[(position_x, position_y)].actionset[i].value), end = '')
 				print("  ", end = '')
